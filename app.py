@@ -2,6 +2,7 @@ import os
 import sys
 from flask import Flask, send_from_directory, render_template
 from flask_migrate import Migrate
+from flask import redirect
 from flask_jwt_extended import JWTManager
 from dotenv import load_dotenv
 
@@ -43,4 +44,7 @@ def painel():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
-    
+
+@app.route("/")
+def home():
+    return redirect("/painel")
