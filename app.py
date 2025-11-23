@@ -40,11 +40,13 @@ app.register_blueprint(admin_bp, url_prefix='/admin')
 def painel():
     return render_template('painel.html')
 
+# 🌍 Rota raiz
+@app.route("/")
+def home():
+    return redirect("/painel")
+
 # 🏁 Executa o app
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
-
-@app.route("/")
-def home():
-    return redirect("/painel")
+    
