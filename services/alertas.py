@@ -12,3 +12,12 @@ def verificar_alerta_categoria():
     for categoria in categorias:
         if categoria['favoritos'] > LIMITE_FAVORITOS:
             print(f"⚠️ Alerta: Categoria {categoria['nome']} ultrapassou {LIMITE_FAVORITOS} favoritos!")
+
+def verificar_alerta_categoria(usuario_id):
+    # Lógica de verificação de alertas vai aqui
+    return "Alertas verificados"
+
+def verificar_alerta_categoria(usuario_id):
+    # Aqui você pode colocar a lógica real de verificação de alertas
+    return "Alertas verificados"
+

@@ -1,7 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
-from extensions import db 
+from werkzeug.security import generate_password_hash
+from extensions import db
 from datetime import datetime
+from werkzeug.security import check_password_hash
 
 class Oferta(db.Model):
     __tablename__ = 'oferta'  # ✅ Isso resolve o problema
@@ -61,4 +62,23 @@ class Favorito(db.Model):
     usuario = db.relationship('Usuario', backref='favoritos')
     oferta = db.relationship('Oferta', backref='favoritos')
 
+class Produto(db.Model):
+    __tablename__ = 'produtos'
+
+    id = db.Column(db.Integer, primary_key=True)
+    asin = db.Column(db.String(20), unique=True, nullable=False, index=True)
+    nome = db.Column(db.String(255), nullable=False)
+    preco = db.Column(db.Float, nullable=True)
+    imagem_url = db.Column(db.String(500), nullable=True)
+    rating = db.Column(db.Float, nullable=True)
+    data_criacao = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def to_dict(self):
+        return {
+            "asin": self.asin,
+            "nome": self.nome,
+            "preco": self.preco,
+            "imagem_url": self.imagem_url,
+            "rating": self.rating
+        }
 

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastrar Nova Oferta</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h2>Cadastrar Nova Oferta</h2>
+  <form method="POST" action="/ofertas/nova-oferta">
+    <label>Título:</label><br>
+    <input type="text" name="titulo" required><br><br>
+
+    <label>Loja:</label><br>
+    <input type="text" name="loja" required><br><br>
+
+    <label>Preço:</label><br>
+    <input type="number" step="0.01" name="preco" required><br><br>
+
+    <label>Categoria:</label><br>
+    <input type="text" name="categoria"><br><br>
+
+    <button type="submit">Salvar Oferta</button>
+  </form>
+</body>
+</html>

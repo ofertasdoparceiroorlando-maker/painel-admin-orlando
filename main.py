@@ -2,9 +2,7 @@ from flask import Flask, request, jsonify
 from amazon_paapi import AmazonApi
 from dotenv import load_dotenv
 import os
-
 from pathlib import Path
-from dotenv import load_dotenv
 
 env_path = Path(__file__).parent / '.env'
 load_dotenv(dotenv_path=env_path)
@@ -28,9 +26,8 @@ def produto():
     if not asin:
         return jsonify({'erro': 'ASIN não fornecido'}), 400
 
-    result = amazon.get_items([asin])
-    if not result.items:
-        return jsonify({'erro': 'Produto não encontrado'}), 404
+    # Exemplo de resposta simulada
+    return jsonify({'asin': asin, 'produto': 'Nome do produto fictício'})
 
     item = result.items[0]
     return jsonify({

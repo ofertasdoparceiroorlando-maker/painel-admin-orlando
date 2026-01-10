@@ -1,32 +1,127 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Painel de Alertas</title>
+  <title>Painel de Ofertas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <script src="{{ url_for('static', filename='painel.js') }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script defer src="{{ url_for('static', filename='painel.js') }}"></script>
 </head>
 <body>
-  <h2>Categorias mais engajadas</h2>
+  <header class="topbar">
+    <h2>Painel de Ofertas</h2>
+    <nav class="topbar-actions">
+      <a href="#sec-cadastro">Cadastro</a>
+      <a href="#sec-filtros">Filtros</a>
+      <a href="#sec-dashboard">Dashboard</a>
+      <a href="#sec-ofertas">Ofertas</a>
+      <button id="toggleDark">🌙</button>
+      <button id="exportarCSV">📄 CSV</button>
+      <button id="exportarFavoritos">⭐ Favoritos</button>
+    </nav>
+  </header>
 
-  <!-- Filtro de categorias -->
-  <div class="filtro-container">
-    <input type="text" id="filtroCategoria" placeholder="Filtrar por categoria..." />
-    <button id="limparFiltro">Limpar</button>
+  <!-- Formulário de cadastro -->
+  <section class="card section" id="sec-cadastro">
+    <h3>Cadastrar nova oferta</h3>
+    <form id="formCadastro" class="grid-form">
+      <input type="text" id="titulo" placeholder="Título da oferta" required />
+      <input type="text" id="loja" placeholder="Loja" required />
+      <input type="number" id="preco" placeholder="Preço" step="0.01" required />
+      <select id="categoria" required>
+        <option value="">Selecione a categoria</option>
+        <option value="Eletrônicos">Eletrônicos</option>
+        <option value="Beleza">Beleza</option>
+        <option value="Moda">Moda</option>
+        <option value="Esportes">Esportes</option>
+        <option value="Casa">Casa</option>
+        <option value="Alimentos">Alimentos</option>
+        <option value="Livros">Livros</option>
+        <option value="Brinquedos">Brinquedos</option>
+        <option value="Outros">Outros</option>
+      </select>
+      <button type="submit">Cadastrar</button>
+    </form>
+  </section>
+
+  <!-- Filtros -->
+  <section class="card section" id="sec-filtros">
+    <h3>Filtros e busca</h3>
+    <div class="grid-form">
+      <input type="text" id="filtroCategoria" placeholder="Filtrar por categoria..." />
+      <input type="text" id="filtroLoja" placeholder="Filtrar por loja..." />
+      <input type="number" id="precoMin" placeholder="Preço mínimo" step="0.01" />
+      <input type="number" id="precoMax" placeholder="Preço máximo" step="0.01" />
+      <input type="text" id="buscaGlobal" placeholder="Busca global..." />
+      <div class="row-actions">
+        <button id="limparFiltro">Limpar</button>
+        <button id="ordenarAsc">Preço ↑</button>
+        <button id="ordenarDesc">Preço ↓</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dashboard -->
+  <section class="section" id="sec-dashboard">
+    <div class="grid-2">
+      <div class="card">
+        <h3>Ofertas por categoria</h3>
+        <canvas id="graficoCategorias"></canvas>
+      </div>
+      <div class="card">
+        <h3>Preço médio por categoria</h3>
+        <canvas id="graficoPrecos"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Comparativo por loja</h3>
+      <canvas id="graficoLojas"></canvas>
+    </div>
+  </section>
+
+  <!-- Lista de ofertas -->
+  <section class="section" id="sec-ofertas">
+    <div id="alertas" class="cards-grid"></div>
+    <div class="paginacao-container">
+      <button id="paginaAnterior">Anterior</button>
+      <span id="paginaInfo"></span>
+      <button id="paginaProxima">Próxima</button>
+    </div>
+  </section>
+
+  <!-- Modal de edição -->
+  <div id="modalEdicao" class="modal hidden">
+    <div class="modal-content card">
+      <h3>Editar oferta</h3>
+      <form id="formEdicao" class="grid-form">
+        <input type="text" id="editTitulo" required />
+        <input type="text" id="editLoja" required />
+        <input type="number" id="editPreco" step="0.01" required />
+        <select id="editCategoria" required>
+          <option value="Eletrônicos">Eletrônicos</option>
+          <option value="Beleza">Beleza</option>
+          <option value="Moda">Moda</option>
+          <option value="Esportes">Esportes</option>
+          <option value="Casa">Casa</option>
+          <option value="Alimentos">Alimentos</option>
+          <option value="Livros">Livros</option>
+          <option value="Brinquedos">Brinquedos</option>
+          <option value="Outros">Outros</option>
+        </select>
+        <div class="row-actions">
+          <button type="submit">Salvar</button>
+          <button type="button" id="cancelarEdicao">Cancelar</button>
+        </div>
+      </form>
+    </div>
   </div>
 
-  <!-- Cards renderizados dinamicamente -->
-  <div id="alertas"></div>
+  <!-- Toast notifications -->
+  <div id="toast-container"></div>
 
-  <!-- Gráfico de barras -->
-  <canvas id="graficoCategorias" width="400" height="200"></canvas>
-
-  <!-- Ações -->
-  <div class="acoes-container">
-    <button id="toggleDark">Modo Escuro</button>
-    <button id="exportarCSV">Exportar CSV</button>
-  </div>
-
-  <!-- Script principal -->
+  <!-- Botão voltar ao topo -->
+  <button id="btnTopo" title="Voltar ao topo">⬆️ Topo</button>
 </body>
 </html>
+
